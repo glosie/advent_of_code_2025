@@ -36,14 +36,14 @@ module Day2
       end
     end
 
-    # generate ids where the string is exactly doubled (e.g., 1212, 565656)
+    # generate ids where the string is exactly doubled (e.g., 55, 6464, 123123)
     def generate_doubled_numbers(total_digits)
       return [] if total_digits.odd?
 
       n_digit_numbers(total_digits / 2).map { |p| (p.to_s * 2).to_i }
     end
 
-    # generate all ids that are a repeated pattern (e.g., 123123)
+    # generate all ids that are a repeated pattern (e.g., 12341234, 123123123, 1111111)
     def generate_repeated_patterns(total_digits)
       (1...total_digits)
         .select { |len| total_digits % len == 0 }
