@@ -125,7 +125,7 @@ if __FILE__ == $0
   input = File.read(File.join(__dir__, "input.txt"))
 
   SolutionRunner.new(
-    Day4,
+    Object.const_get(File.basename(__dir__).capitalize),
     input,
     sample_input:,
     expected_part1: 13,
