@@ -2,9 +2,10 @@ module Day5
   class << self
     def part1(input)
       ranges, ingredient_ids = parse_input(input)
+      merged = merge_ranges(ranges)
 
       ingredient_ids.count do |id|
-        ranges.any? { |range| range.cover?(id) }
+        merged.any? { |range| range.cover?(id) }
       end
     end
 
