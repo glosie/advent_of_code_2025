@@ -5,7 +5,8 @@ module Day5
       merged = merge_ranges(ranges)
 
       ingredient_ids.count do |id|
-        merged.any? { |range| range.cover?(id) }
+        idx = merged.bsearch_index { |r| r.end >= id }
+        idx && merged[idx].cover?(id)
       end
     end
 
