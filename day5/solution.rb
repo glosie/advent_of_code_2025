@@ -6,7 +6,7 @@ module Day5
 
       ingredient_ids.count do |id|
         idx = merged.bsearch_index { |r| r.end >= id }
-        idx && merged[idx].cover?(id)
+        idx && id >= merged[idx].begin
       end
     end
 
