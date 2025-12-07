@@ -19,15 +19,19 @@ module Day7
     def part2(input)
       grid = parse_grid(input)
       start_row, start_col = find_start_position(grid)
-      rows, cols = grid.size, grid.first.size
+      max_col = grid.first.size - 1
 
-      path_counts = Array.new(rows) { Array.new(cols, 0) }
-      path_counts[start_row][start_col] = 1
+      paths = { start_col => 1 }
 
-      (start_row...rows - 1)
-        .each_with_object(path_counts) do |row, counts|
-          split_paths(grid, counts, row, cols)
-        end.last.sum
+      (start_row...grid.size - 1).each do |row|
+        paths = paths.each_with_object(Hash.new(0)) do |(col, count), next_paths|
+          get_next_positions(col, grid[row][col], max_col).each do |new_col|
+            next_paths[new_col] += count
+          end
+        end
+      end
+
+      paths.values.sum
     end
 
     private
@@ -63,15 +67,6 @@ module Day7
       [new_beams.uniq, splits]
     end
 
-    def split_paths(grid, path_counts, row, cols)
-      path_counts[row].each_with_index do |count, col|
-        next if count.zero?
-
-        get_next_positions(col, grid[row][col], cols - 1).each do |new_col|
-          path_counts[row + 1][new_col] += count
-        end
-      end
-    end
   end
 end
 
