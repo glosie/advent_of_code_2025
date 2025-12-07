@@ -1,7 +1,7 @@
 require 'benchmark'
 
 class SolutionRunner
-  def initialize(solution_module, input, sample_input: nil, expected_part1: nil, expected_part2: nil)
+  def initialize(solution_module, input = nil, sample_input: nil, expected_part1: nil, expected_part2: nil)
     @solution_module = solution_module
     @input = input
     @sample_input = sample_input
@@ -20,16 +20,18 @@ class SolutionRunner
     end
 
     # run actual input
-    if @solution_module.respond_to?(:part1)
-      result1 = nil
-      time1 = Benchmark.measure { result1 = @solution_module.part1(@input) }
-      puts "Part 1: #{result1} (#{format_time(time1.real)})"
-    end
+    if @input
+      if @solution_module.respond_to?(:part1)
+        result1 = nil
+        time1 = Benchmark.measure { result1 = @solution_module.part1(@input) }
+        puts "Part 1: #{result1} (#{format_time(time1.real)})"
+      end
 
-    if @solution_module.respond_to?(:part2)
-      result2 = nil
-      time2 = Benchmark.measure { result2 = @solution_module.part2(@input) }
-      puts "Part 2: #{result2} (#{format_time(time2.real)})"
+      if @solution_module.respond_to?(:part2)
+        result2 = nil
+        time2 = Benchmark.measure { result2 = @solution_module.part2(@input) }
+        puts "Part 2: #{result2} (#{format_time(time2.real)})"
+      end
     end
   end
 
