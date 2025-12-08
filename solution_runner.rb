@@ -14,13 +14,15 @@ class SolutionRunner
 
     # run sample verification if provided
     if @sample_input
-      puts "\n--- Sample Verification ---"
+      puts "\n--- Sample Input ---"
       verify_sample
       puts ""
     end
 
     # run actual input
     if @input
+      puts "--- Actual Input ---"
+
       if @solution_module.respond_to?(:part1)
         result1 = nil
         time1 = Benchmark.measure { result1 = @solution_module.part1(@input) }
