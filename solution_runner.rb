@@ -20,7 +20,7 @@ class SolutionRunner
     end
 
     # run actual input
-    if @input
+    if @input && @input != ""
       puts "--- Actual Input ---"
 
       if @solution_module.respond_to?(:part1)
