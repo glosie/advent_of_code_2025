@@ -1,3 +1,2 @@
 .ruby-lsp
-**/input.txt
-**/sample_input.txt
+**/*input.txt

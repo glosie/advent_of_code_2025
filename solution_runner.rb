@@ -1,10 +1,11 @@
 require 'benchmark'
 
 class SolutionRunner
-  def initialize(solution_module, input = nil, sample_input: nil, expected_part1: nil, expected_part2: nil)
+  def initialize(solution_module, input = nil, sample_input: nil, sample_input_part2: nil, expected_part1: nil, expected_part2: nil)
     @solution_module = solution_module
     @input = input
     @sample_input = sample_input
+    @sample_input_part2 = sample_input_part2 || sample_input
     @expected_part1 = expected_part1
     @expected_part2 = expected_part2
   end
@@ -47,7 +48,7 @@ class SolutionRunner
     end
 
     if @expected_part2 && @solution_module.respond_to?(:part2)
-      result = @solution_module.part2(@sample_input)
+      result = @solution_module.part2(@sample_input_part2)
       status = result == @expected_part2 ? "✓" : "✗"
       puts "Part 2: #{result} (expected: #{@expected_part2}) #{status}"
     end
