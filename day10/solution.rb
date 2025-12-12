@@ -73,11 +73,11 @@ module Day10
         buttons.map { |btn| btn.include?(pos) ? 1 : 0 } << target
       end
 
-      row_echelon, pivots = gaussian_elimination(matrix)
+      rref, pivots = gaussian_elimination(matrix)
       free_vars = (0...buttons.length).to_a - pivots
       button_presses = Array.new(buttons.length, 0)
 
-      dfs(row_echelon, pivots, free_vars, targets.max, button_presses)
+      dfs(rref, pivots, free_vars, targets.max, button_presses)
     end
 
     def gaussian_elimination(matrix)
@@ -109,7 +109,7 @@ module Day10
 
     def dfs(row_echelon, pivots, free_vars, bound, button_presses, depth = 0, cost = 0, best = Float::INFINITY)
       if depth == free_vars.size
-        return compute_total_presses(row_echelon, pivots, button_presses)
+        return compute_total_presses(row_echelon, pivots, free_vars, button_presses)
       end
 
       col = free_vars[depth]
@@ -126,21 +126,19 @@ module Day10
       best
     end
 
-    # Back-substitution
+    # Back-substitution using RREF (reduced row echelon form)
     #
     # Given free variable values, compute pivot variable values.
-    #
-    # Starting from the last pivot row and working up, each pivot variable is:
-    #   x_pivot = RHS - (coefficients × already-solved variables)
+    # In RREF, pivot columns are zeroed out except at the pivot, so each pivot is:
+    #   x_pivot = RHS - (free variable coefficients × free variable values)
     #
     # Returns total presses if solution is valid (non-negative integers),
     # otherwise infinity to signal infeasibility.
-    def compute_total_presses(row_echelon, pivots, button_presses)
+    def compute_total_presses(rref, pivots, free_vars, button_presses)
       solution = button_presses.dup
-      n_vars = button_presses.length
 
-      pivots.zip(row_echelon).reverse_each do |col, row|
-        val = row.last - (col + 1...n_vars).sum { |c| row[c] * solution[c] }
+      pivots.zip(rref).each do |col, row|
+        val = row.last - free_vars.sum { |c| row[c] * solution[c] }
 
         return Float::INFINITY unless val.denominator == 1 && val >= 0
 
